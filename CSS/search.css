@@ -1,0 +1,79 @@
+﻿#search {
+    float: right;
+    margin-top: 9px;
+    width: 250px;
+}
+
+.search {
+    padding: 5px 0;
+    width: 230px;
+    height: 30px;
+    position: relative;
+    left: 10px;
+    float: left;
+    line-height: 22px;
+}
+
+    .search input {
+        position: absolute;
+        width: 0px;
+        float: Left;
+        margin-left: 210px;
+        -webkit-transition: all 0.7s ease-in-out;
+        -moz-transition: all 0.7s ease-in-out;
+        -o-transition: all 0.7s ease-in-out;
+        transition: all 0.7s ease-in-out;
+        height: 30px;
+        line-height: 18px;
+        padding: 0 2px 0 2px;
+        border-radius:1px;
+    }
+
+        .search:hover input, .search input:focus {
+            width: 200px;
+            margin-left: 0px;
+        }
+
+.btn {
+    height: 30px;
+    position: absolute;
+    right: 0;
+    top: 5px;
+    border-radius:1px;
+}
+
+.grid {
+       list-style: none;
+       background: #fff;
+       border-radius: 6px;
+       box-sizing: border-box;
+       -moz-box-sizing: border-box;
+       -webkit-transition: all 0.6s ease-out;
+       transition: all 0.6s ease-out;
+       box-shadow: 2px 2px 5px #393939 ;
+   }
+
+   .grid-img {
+       border-top-left-radius: 6px;
+       border-top-right-radius: 6px;
+       width: 150px;
+       height: 200px;
+       vertical-align: middle;
+       -webkit-transition: opacity 0.6s ease-out;
+       transition: opacity 0.6s ease-out;
+       background-color: #fff;
+
+
+   }
+
+   #wrapper .text {
+position:relative;
+bottom:30px;
+left:0px;
+visibility:hidden;
+color:black;
+}
+
+#wrapper:hover .text {
+visibility:visible;
+}

@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>codetest</h2>
+
+
+
+<div class="container">
+    <div class="row">
+        <h2>Movie Search</h2>
+        <div class="search">
+            <form id="movieSearch">
+                <input type="text" class="form-control input-sm searchValue" maxlength="64" placeholder="Search" />
+                <button type="submit" class="btn btn-primary btn-sm">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<br />
+<br/>
+
+<div class="row col-xs-12" id="movieContainer">
+
+</div>
+
+
+
+@* referening scripts and style files *@
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link href="~/css/search.css" rel="stylesheet" />
+
+
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var movie = {};
+        
+        @*declaring the startup function*@
+        StartUp = function () {
+            @*creating a submit handler for the users search*@
+            $("#movieSearch").on("submit", onSearch);
+        };
+
+        @* defining the submit handler function *@
+        onSearch = function (event) {
+            event.preventDefault();
+            @* consle logging that the handler worked*@
+            console.log("search fired");
+            @* storing the searchQuery value into a variable*@
+            var searchQuery = $('.searchValue').val();
+            @* adding the search query and api key to a payload object *@
+            var payload = {
+                query: searchQuery,
+                api_key: '42b3e60b6636f50062f6d3579100d83f'
+            }
+            @* console loging the new payload object*@
+            console.log(payload);
+            @* calling a get ajax call based on the data contained in the payload object*@
+            movie.get(payload, onSearchSuccess, onSearchError);
+
+        };
+
+        @* the get ajax call*@
+        movie.get = function (payload, onSuccess, onError){
+            var url = "http://api.themoviedb.org/3/search/movie";
+            
+            var settings = {
+                cache: false
+                ,contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+                ,data: payload
+                ,dataType:"json"
+                ,success: onSuccess
+                ,error: onError
+                ,tpye: "GET"
+            };
+            $.ajax(url,settings);
+        }
+        @* defining the success funtion of the ajax call*@
+        onSearchSuccess = function (data) {
+            @* clearing the container that holds the results when the call is successfull to clear room for new results*@
+            $('#movieContainer').empty();
+            @* logging the success of the ajax call*@
+            console.log('ajax success');
+            @* storing the data that came back from the ajax call into a new variable*@
+            var newData = data.results;
+            @* console logging the results*@
+            console.log("results", newData);
+            @* making a for loop to loop through the results*@
+            for (var i = 0; i <= newData.length; i++) {
+                @* storing the result of the loop into a new variable *@
+                var movieData = newData[i];
+                @* storing a clone/template into a variable*@
+                var $movie = $($('#movieTemplate').html());
+                @* adding the src attribute from the movieData variable to the templates img tag*@
+                $movie.find("#moviePic").attr('src', "http://image.tmdb.org/t/p/w154" + movieData.poster_path);
+                @* adding the text from the movie data to the clones p tag  *@
+                $movie.find("#movieTitle").text(movieData.title);
+                @* adding the the release date data to the p tag in the clone *@
+                $movie.find('#release').text("release date: " + movieData.release_date);
+                @* adding the the vote average data to the p tag in the clone *@
+                $movie.find('#votes').text("vote average: " + movieData.vote_average);
+                @* appending the new template to the main div*@
+                $('#movieContainer').append($movie);
+
+            }
+
+        }
+        @* defining the error function of the ajax call*@
+        onSearchError = function () {
+            console.log("ajax error");
+        }
+        @*calling the start up function *@
+        StartUp();
+    }
+
+    
+
+)
+</script>
+@* the template for the posters and titles*@
+<script type="text/html" id="movieTemplate">
+    <div class="col-md-3 grid" id="wrapper" >
+        <center>
+        <img class="grid-img img-responsive" id="moviePic" src="" />  
+        </center>
+        <center>
+            <p id="movieTitle"></p>
+            <br/>
+            <p class="text" id="release"></p>
+            <p class="text" id="votes"></p>
+        </center>
+    </div>
+</script>
+
